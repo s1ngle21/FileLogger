@@ -4,9 +4,14 @@ import java.util.Scanner;
 
 public class FileLoggerConfigurationLoader {
 
-    public static FileLoggerConfiguration load(String filePath) throws FileNotFoundException {
+    public static FileLoggerConfiguration load(String filePath)  {
         File configFile = new File(filePath);
-        Scanner scanner = new Scanner(configFile);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(configFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found!");
+        }
         String name = null;
         LoggingLevel loggingLevel = null;
         long maxSize = 0;
