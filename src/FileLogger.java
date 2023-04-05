@@ -45,7 +45,7 @@ public class FileLogger {
 
 
     public void createFile(String message) {
-        String fileName = cfg.getFileName() + "." + cfg.getFileFormat();
+        String fileName = "1_" + cfg.getFileName() + "." + cfg.getFileFormat();
             File file = new File(fileName);
         try (FileWriter myWriter = new FileWriter(file, true)){
             myWriter.write(message);
