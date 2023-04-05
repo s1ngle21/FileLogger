@@ -2,13 +2,26 @@ public class FileLoggerConfiguration {
 
     private String fileName;
     private LoggingLevel loggingLevel;
-    private long fileSizeMax;
+    private long maxFileSize;
     private String fileFormat;
 
     public FileLoggerConfiguration(String fileName, LoggingLevel loggingLevel, long fileSize, String fileFormat) {
+        if (fileName == null || fileName.isEmpty()) {
+            throw new IllegalArgumentException("File name can not be null or empty");
+        }
+        if (loggingLevel == null) {
+            throw new IllegalArgumentException("Logging level can not be null");
+        }
+//        if (maxFileSize <= 0) {
+//            throw new IllegalArgumentException("Max File Size must be over 0");
+//        }
+        if (fileFormat == null || fileFormat.isEmpty()) {
+            throw new IllegalArgumentException("File format can not be null or empty");
+        }
+
         this.fileName = fileName;
         this.loggingLevel = loggingLevel;
-        this.fileSizeMax = fileSize;
+        this.maxFileSize = fileSize;
         this.fileFormat = fileFormat;
     }
 
@@ -22,7 +35,7 @@ public class FileLoggerConfiguration {
     }
 
     public long getFileSizeMax() {
-        return fileSizeMax;
+        return maxFileSize;
     }
 
     public String getFileFormat() {

@@ -8,51 +8,50 @@ public class FileLogger {
         this.cfg = cfg;
     }
 
-    public void log(String level, String message) throws FileMaxSizeReachedException {
-        try {
-            File file = new File(cfg.getFileName() + "." + cfg.getFileFormat());
+    public void log(LoggingLevel level, String message) {
+        String outMessage = " Current time: " + DateUtils.getCurrentDate("dd.MM.yyyy - HH:mm:ss") + ";" +
+                " Level: " + level + " Message: " + message + ";" + "\n";
+        File file = new File(cfg.getFileName() + "." + cfg.getFileFormat());
+        try (FileWriter myWriter = new FileWriter(file, true)) {
             if (file.length() + message.length() > cfg.getFileSizeMax()) {
-                createFile();
-                throw new FileMaxSizeReachedException(String.format("Max size of file is: %d, your size of file %s.%s is: %s",
-                        cfg.getFileSizeMax(), cfg.getFileName(), cfg.getFileFormat(), file.length() + message.length()));
+                createFile(outMessage);
             }
-            FileWriter myWriter = new FileWriter(file, true);
-            String outMessage = " Current time: " + Date.date() + ";" + " Level: " + level + " Message: " + message + ";" + "\n";
             myWriter.write(outMessage);
-            myWriter.close();
         } catch (IOException e) {
-            throw new RuntimeException("Something went wrong while writing in");
+            throw new RuntimeException("An error occurred while writing into a file: " + cfg.getFileName() + "." + cfg.getFileFormat(), e);
         }
     }
 
-    public void debug(String message) {
-        try {
-            log("DEBUG;", message);
-        } catch (FileMaxSizeReachedException e) {
-            throw new RuntimeException(e);
+    public void debug() {
+        if (isDebugEnabled() == true) {
+            log(LoggingLevel.DEBUG, "Message for DEBUG");
+            log(LoggingLevel.INFO, "Message for INFO");
+        }
+
+    }
+
+    public void info() {
+        if (isDebugEnabled() == false) {
+            log(LoggingLevel.INFO, "Message for INFO");
         }
     }
 
-    public void info(String message) {
-        try {
-            log("INFO;", message);
-        } catch (FileMaxSizeReachedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void validationDebugInfo() {
+    public boolean isDebugEnabled() {
         if (cfg.getLoggingLevel() == LoggingLevel.DEBUG) {
-            debug("Message for DEBUG");
-            info("Message for INFO");
-        } else {
-            info("Message for INFO");
+            return true;
         }
+        return false;
     }
 
-    public void createFile() throws IOException {
+
+    public void createFile(String message) {
         String fileName = cfg.getFileName() + "." + cfg.getFileFormat();
-        File file = new File(fileName);
-        file.createNewFile();
+            File file = new File(fileName);
+        try (FileWriter myWriter = new FileWriter(file, true)){
+            myWriter.write(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
