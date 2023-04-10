@@ -9,28 +9,31 @@ public class FileLoggerConfigurationLoader {
         long maxSize = 0;
         String format = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if (line.startsWith("FILE:")) {
-                    name = line.substring("FILE:".length()).trim();
-                } else if (line.startsWith("LEVEL:")) {
-                    String level = line.substring("LEVEL:".length()).trim();
-                    loggingLevel = LoggingLevel.valueOf(level.toUpperCase());
-                } else if (line.startsWith("MAX-SIZE:")) {
-                    String size = line.substring("MAX-SIZE:".length()).trim();
-                    maxSize = Long.parseLong(size);
-                } else if (line.startsWith("FORMAT:")) {
-                    format = line.substring("FORMAT:".length()).trim();
+                String[] lineSplit = line.split(":");
+                switch (lineSplit[0].trim()) {
+                    case "FILE":
+                        name = lineSplit[1].trim();
+                        break;
+                    case "LEVEL":
+                        String level = lineSplit[1].trim();
+                        loggingLevel = LoggingLevel.valueOf(level.toUpperCase());
+                        break;
+                    case "MAX-SIZE":
+                        String size = lineSplit[1].trim();
+                        maxSize = Long.parseLong(size);
+                        break;
+                    case "FORMAT":
+                        format = lineSplit[1].trim();
+                        break;
                 }
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found!");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return new FileLoggerConfiguration(name, loggingLevel, maxSize, format);
     }
 }

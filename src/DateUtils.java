@@ -3,7 +3,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class DateUtils {
 
-    private static final String pattern = "dd.MM.yyyy - HH:mm:ss";
+    private static final String PATTERN = "dd.MM.yyyy - HH:mm:ss";
 
     private DateUtils() {
     }

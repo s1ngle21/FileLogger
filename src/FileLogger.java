@@ -23,24 +23,20 @@ public class FileLogger {
     }
 
     public void debug() {
-        if (isDebugEnabled() == true) {
+        if (isDebugEnabled()) {
             log(LoggingLevel.DEBUG, "Message for DEBUG");
-            log(LoggingLevel.INFO, "Message for INFO");
         }
 
     }
 
     public void info() {
-        if (isDebugEnabled() == false) {
+        if (!isDebugEnabled()) {
             log(LoggingLevel.INFO, "Message for INFO");
         }
     }
 
     public boolean isDebugEnabled() {
-        if (cfg.getLoggingLevel() == LoggingLevel.DEBUG) {
-            return true;
-        }
-        return false;
+        return cfg.getLoggingLevel() == LoggingLevel.DEBUG;
     }
 
 
