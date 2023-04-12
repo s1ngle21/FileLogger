@@ -22,16 +22,16 @@ public class FileLogger {
         }
     }
 
-    public void debug() {
+    public void debug(String message) {
         if (isDebugEnabled()) {
-            log(LoggingLevel.DEBUG, "Message for DEBUG");
+            log(LoggingLevel.DEBUG, message);
         }
 
     }
 
-    public void info() {
+    public void info(String message) {
         if (!isDebugEnabled()) {
-            log(LoggingLevel.INFO, "Message for INFO");
+            log(LoggingLevel.INFO, message);
         }
     }
 
