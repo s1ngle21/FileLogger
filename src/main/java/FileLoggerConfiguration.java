@@ -12,7 +12,7 @@ public class FileLoggerConfiguration {
         if (loggingLevel == null) {
             throw new IllegalArgumentException("Logging level can not be null!");
         }
-        if (maxFileSize < 1) {
+        if (fileSize < 1) {
             throw new IllegalArgumentException("Size of file must be above zero!");
         }
         if (fileFormat == null || fileFormat.isEmpty()) {
