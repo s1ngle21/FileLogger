@@ -1,0 +1,4 @@
+FILE: test
+LEVEL: debug
+MAX-SIZE: 1024
+FORMAT: txt
